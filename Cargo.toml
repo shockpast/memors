@@ -2,6 +2,12 @@
 name = "memors"
 version = "0.1.0"
 edition = "2024"
+authors = [ "shockpast" ]
+description = "kitchen-sink for hooking functions (and finding patterns)"
+repository = "https://github.com/shockpast/memors"
+readme = ".github/README.md"
+license = "MIT"
+keywords = [ "hook", "signature", "pattern", "memory", "minhook" ]
 
 [features]
 default = [ "hook" ]
