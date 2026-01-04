@@ -24,7 +24,7 @@ pub struct Module {
 }
 
 impl Module {
-    unsafe fn new(name: &'static str) -> Result<Module> {
+    pub unsafe fn new(name: &'static str) -> Result<Module> {
         unsafe {
             let mut info = MODULEINFO::default();
 
@@ -56,7 +56,7 @@ impl Module {
     ///
     /// typed_fn("Hello, World\0".as_ptr() as _);
     /// ```
-    unsafe fn get(&self, name: &str) -> Option<*mut c_void> {
+    pub unsafe fn get(&self, name: &str) -> Option<*mut c_void> {
         unsafe {
             let func = GetProcAddress(self.handle, PCSTR(format!("{}\0", name).as_ptr()))?;
             Some(func as *mut c_void)
@@ -64,7 +64,7 @@ impl Module {
     }
 
     /// Same as `#get` function, but allows to specify function type beforehand
-    unsafe fn get_typed<T>(&self, name: &str) -> Option<T>
+    pub unsafe fn get_typed<T>(&self, name: &str) -> Option<T>
     where
         T: Copy,
     {
@@ -86,7 +86,7 @@ impl Module {
     ///
     /// println!("Address: {address:X}, Signature: {signature:#?}");
     /// ```
-    unsafe fn find(&self, sig: &Signature) -> Option<*mut c_void> {
+    pub unsafe fn find(&self, sig: &Signature) -> Option<*mut c_void> {
         unsafe {
             let data = std::slice::from_raw_parts(self.base, self.size);
             let sig_len = sig.bytes.len();
@@ -120,7 +120,7 @@ pub struct Hook {
 }
 
 impl Hook {
-    fn new(sig: Signature, name: &'static str, detour: *mut c_void) -> Self {
+    pub fn new(sig: Signature, name: &'static str, detour: *mut c_void) -> Self {
         Self { sig, name, detour, target: None, original: None }
     }
 
@@ -154,7 +154,7 @@ impl Hook {
     ///     hook.enable();
     /// }
     /// ```
-    unsafe fn install(&mut self, module: Module) -> Option<bool> {
+    pub unsafe fn install(&mut self, module: Module) -> Option<bool> {
         unsafe {
             let address = module.find(&self.sig)?;
             let original = MinHook::create_hook(address, self.detour).ok()?;
@@ -167,7 +167,7 @@ impl Hook {
         }
     }
 
-    unsafe fn enable(&self) -> Option<bool> {
+    pub unsafe fn enable(&self) -> Option<bool> {
         unsafe {
             MinHook::enable_hook(self.target?).ok()?;
 
@@ -175,7 +175,7 @@ impl Hook {
         }
     }
 
-    unsafe fn disable(&self) -> Option<bool> {
+    pub unsafe fn disable(&self) -> Option<bool> {
         unsafe {
             MinHook::disable_hook(self.target?).ok()?;
 
