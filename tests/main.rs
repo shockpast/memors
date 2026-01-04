@@ -1,4 +1,4 @@
-use memors::{pattern::*, hook::*};
+use memors::{pattern::*};
 
 #[test]
 fn code_to_struct() {
