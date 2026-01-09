@@ -17,7 +17,7 @@ use crate::pattern::*;
 
 #[derive(Debug)]
 pub struct Module {
-    name: &'static str,
+    pub name: &'static str,
     handle: HMODULE,
     pub size: usize,
     pub base: *const u8
@@ -124,13 +124,16 @@ impl Hook {
         Self { sig, name, detour, target: None, original: None }
     }
 
-    fn detour(&self) -> *mut c_void {
+    pub fn name(&self) -> &'static str {
+        self.name
+    }
+    pub fn detour(&self) -> *mut c_void {
         self.detour
     }
-    fn target(&self) -> Option<*mut c_void> {
+    pub fn target(&self) -> Option<*mut c_void> {
         self.target
     }
-    fn original(&self) -> Option<*mut c_void> {
+    pub fn original(&self) -> Option<*mut c_void> {
         self.original
     }
 
