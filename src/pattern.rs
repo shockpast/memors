@@ -1,9 +1,10 @@
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Default, Clone)]
 pub struct Signature {
     pub bytes: Vec<u8>,
     pub mask: Vec<bool>
 }
 
+/// Creates a Signature from "FF ?? FF 0A CC 0A 0A 0A CC"-alike pattern
 pub fn ida(sig: &str) -> Signature {
     let mut bytes = Vec::new();
     let mut mask = Vec::new();
@@ -22,6 +23,7 @@ pub fn ida(sig: &str) -> Signature {
     Signature { bytes, mask }
 }
 
+/// Creates a Signature from "\x03\x00\xFF\x0A"-alike pattern
 pub fn code(sig: &str) -> Signature {
     let mut bytes = Vec::new();
     let mut mask = Vec::new();
